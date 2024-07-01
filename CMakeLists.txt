@@ -17,8 +17,10 @@ src/soundbank.cpp
 src/stream.cpp
 )
 
-add_executable(STRM64
+add_library(STRM64 STATIC
 ${SRC_FILES})
+
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 if(WIN32)
 	target_link_libraries(STRM64

@@ -699,12 +699,35 @@ void AudioOutData::cleanup_resample_context() {
 		swr_free(&resampleContext);
 }
 
+
+// Very fun: I have a version of ffmpeg that supplies a version of libswresample
+//  that removes `swr_alloc_set_opts` in favor of the `new` and `improved` `swr_alloc_set_opts`
+extern "C" int swr_alloc_set_opts2 (
+	struct SwrContext **ps,
+	const int64_t out_ch_layout,
+	enum AVSampleFormat out_sample_fmt,
+	int out_sample_rate,
+	const int64_t in_ch_layout,
+	enum AVSampleFormat in_sample_fmt,
+	int in_sample_rate,
+	int log_offset,
+	void *log_ctx
+);
+
 int AudioOutData::init_audio_resampling(VGMSTREAM *inFileProperties, int inputBufferSize) {
 	uint64_t channelLayout = (1ULL << numChannels) - 1;
 
 	// Works with 18 channels maximum probably, TODO: research whether different bitflags affect how a thing is resampled if it matters for some reason
-	resampleContext = swr_alloc_set_opts(NULL, (int64_t) channelLayout, AV_SAMPLE_FMT_S16, resampledSampleRate,
-		(int64_t) channelLayout, AV_SAMPLE_FMT_S16, sampleRate, 0, NULL);
+	// resampleContext = swr_alloc_set_opts(
+	// 	NULL,
+	// 	(int64_t) channelLayout, AV_SAMPLE_FMT_S16, resampledSampleRate,
+	// 	(int64_t) channelLayout, AV_SAMPLE_FMT_S16, sampleRate, 0, NULL
+	// );
+	int result = swr_alloc_set_opts2(
+		&resampleContext,
+		(int64_t) channelLayout, AV_SAMPLE_FMT_S16, resampledSampleRate,
+		(int64_t) channelLayout, AV_SAMPLE_FMT_S16, sampleRate, 0, NULL
+	);
 	
 	if (resampleContext == NULL) {
 		printf("...FAILED!\nERROR: Could not allocate resampling context!\n");

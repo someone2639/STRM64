@@ -353,67 +353,67 @@ void print_seq_channels(uint16_t instFlags) {
 	printf("\n");
 }
 
-int main(int argc, char **argv) {
-	if (argc == 0) {
-		parsedExeName = "STRM64";
-		printHelp();
-		return RETURN_NOT_ENOUGH_ARGS;
-	}
+// int main(int argc, char **argv) {
+// 	if (argc == 0) {
+// 		parsedExeName = "STRM64";
+// 		printHelp();
+// 		return RETURN_NOT_ENOUGH_ARGS;
+// 	}
 
-	parsedExeName = argv[0];
-	size_t slash = parsedExeName.find_last_of("/\\");
-	if (slash != string::npos)
-		parsedExeName = parsedExeName.substr(slash+1);
+// 	parsedExeName = argv[0];
+// 	size_t slash = parsedExeName.find_last_of("/\\");
+// 	if (slash != string::npos)
+// 		parsedExeName = parsedExeName.substr(slash+1);
 
-	if (argc < 2) {
-		printHelp();
-		return RETURN_NOT_ENOUGH_ARGS;
-	}
+// 	if (argc < 2) {
+// 		printHelp();
+// 		return RETURN_NOT_ENOUGH_ARGS;
+// 	}
 
-	newFilename = argv[1];
+// 	newFilename = argv[1];
 
-	for (int i = 2; i < argc; i++)
-		cmdArgs.emplace_back(argv[i]);
+// 	for (int i = 2; i < argc; i++)
+// 		cmdArgs.emplace_back(argv[i]);
 
-	int ret = parse_input_arguments();
-	if (ret) {
-		printHelp();
-		return ret;
-	}
+// 	int ret = parse_input_arguments();
+// 	if (ret) {
+// 		printHelp();
+// 		return ret;
+// 	}
 
-	newFilename = replace_spaces(newFilename);
+// 	newFilename = replace_spaces(newFilename);
 
-	if (!customNewFilename)
-		newFilename = strip_extension(newFilename);
+// 	if (!customNewFilename)
+// 		newFilename = strip_extension(newFilename);
 
-	ret = get_vgmstream_properties(argv[1]);
-	if (ret) {
-		printHelp();
-		return ret;
-	}
+// 	ret = get_vgmstream_properties(argv[1]);
+// 	if (ret) {
+// 		printHelp();
+// 		return ret;
+// 	}
 
-	ret = generate_new_streams(inFileProperties, newFilename, argv[1], generateStreams);
-	if (!ret && !generateStreams)
-		print_seq_channels(gInstFlags);
+// 	ret = generate_new_streams(inFileProperties, newFilename, argv[1], generateStreams);
+// 	if (!ret && !generateStreams)
+// 		print_seq_channels(gInstFlags);
 
-	if (generateSequence) {
-		if (!ret)
-			ret = generate_new_sequence(newFilename, gInstFlags);
-		else
-			generate_new_sequence(newFilename, gInstFlags);
-	}
+// 	if (generateSequence) {
+// 		if (!ret)
+// 			ret = generate_new_sequence(newFilename, gInstFlags);
+// 		else
+// 			generate_new_sequence(newFilename, gInstFlags);
+// 	}
 
-	if (generateSoundbank) {
-		if (!ret)
-			ret = generate_new_soundbank(newFilename, gInstFlags);
-		else
-			generate_new_soundbank(newFilename, gInstFlags);
-	}
+// 	if (generateSoundbank) {
+// 		if (!ret)
+// 			ret = generate_new_soundbank(newFilename, gInstFlags);
+// 		else
+// 			generate_new_soundbank(newFilename, gInstFlags);
+// 	}
 
-	close_vgmstream(inFileProperties);
+// 	close_vgmstream(inFileProperties);
 
-	if (!(generateStreams || generateSequence || generateSoundbank))
-		printf("No files to generate!\n");
+// 	if (!(generateStreams || generateSequence || generateSoundbank))
+// 		printf("No files to generate!\n");
 
-	return ret;
-}
+// 	return ret;
+// }
