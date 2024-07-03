@@ -67,8 +67,8 @@ bool generateSequence = true;
 bool generateSoundbank = true;
 bool printedHelp = false;
 
-static bool forcedMono = false;
-static uint8_t channelCountOverride = 0;
+bool forcedMono = false;
+uint8_t channelCountOverride = 0;
 static string duplicateStringName = "";
 
 uint16_t gInstFlags = 0x0000;
